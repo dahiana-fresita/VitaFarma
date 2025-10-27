@@ -1,0 +1,147 @@
+CREATE DATABASE VitafarmaDB;
+GO
+USE VitafarmaDB;
+GO
+
+CREATE TABLE Usuarios (
+    IdUsuario INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Telefono VARCHAR(20),
+    Direccion VARCHAR(255),
+    Usuario VARCHAR(50) UNIQUE NOT NULL,
+    Clave VARCHAR(255) NOT NULL,
+    Rol VARCHAR(20) NOT NULL CHECK (Rol IN ('cliente','empleado','admin')),
+    Estado BIT DEFAULT 1
+);
+GO
+
+CREATE TABLE Categorias (
+    IdCategoria INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255)
+);
+GO
+
+CREATE TABLE Medicamentos (
+    IdMedicamento INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255),
+    Precio DECIMAL(10,2) NOT NULL,
+    Stock INT NOT NULL,
+    Imagen VARCHAR(255),  --Url de la imagen, 
+    IdCategoria INT,
+    CONSTRAINT FK_Medicamento_Categoria FOREIGN KEY (IdCategoria)
+        REFERENCES Categorias(IdCategoria)
+);
+GO
+
+CREATE TABLE Carrito (
+    IdCarrito INT IDENTITY(1,1) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    IdMedicamento INT NOT NULL,
+    Cantidad INT NOT NULL CHECK (Cantidad > 0),
+    FechaAgregado DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Carrito_Usuario FOREIGN KEY (IdUsuario)
+        REFERENCES Usuarios(IdUsuario),
+    CONSTRAINT FK_Carrito_Medicamento FOREIGN KEY (IdMedicamento)
+        REFERENCES Medicamentos(IdMedicamento)
+);
+GO
+
+CREATE TABLE Ventas (
+    IdVenta INT IDENTITY(1,1) PRIMARY KEY,
+    Fecha DATETIME DEFAULT GETDATE(),
+    IdUsuario INT NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    MetodoPago VARCHAR(50) DEFAULT 'Efectivo',
+    Estado VARCHAR(50) DEFAULT 'Completado',
+    CONSTRAINT FK_Venta_Usuario FOREIGN KEY (IdUsuario)
+        REFERENCES Usuarios(IdUsuario)
+);
+GO
+
+CREATE TABLE DetalleVentas (
+    IdDetalle INT IDENTITY(1,1) PRIMARY KEY,
+    IdVenta INT NOT NULL,
+    IdMedicamento INT NOT NULL,
+    Cantidad INT NOT NULL CHECK (Cantidad > 0),
+    PrecioUnitario DECIMAL(10,2) NOT NULL,
+    Subtotal AS (Cantidad * PrecioUnitario) PERSISTED,
+    CONSTRAINT FK_DetalleVenta_Venta FOREIGN KEY (IdVenta)
+        REFERENCES Ventas(IdVenta),
+    CONSTRAINT FK_DetalleVenta_Medicamento FOREIGN KEY (IdMedicamento)
+        REFERENCES Medicamentos(IdMedicamento)
+);
+GO
+
+INSERT INTO Usuarios (Nombre, Email, Telefono, Direccion, Usuario, Clave, Rol)
+VALUES 
+('Administrador', 'admin@farmacia.com', '3001234567', 'Sede principal', 'admin', 'admin123', 'admin'),
+('Carlos Pérez', 'carlos@cliente.com', '3019876543', 'Calle 10 #12-45', 'carlos', '1234', 'cliente'),
+('Laura Gómez', 'laura@empleado.com', '3026549871', 'Carrera 7 #21-50', 'laura', '1234', 'empleado');
+GO
+
+INSERT INTO Categorias (Nombre, Descripcion)
+VALUES 
+('Analgésicos', 'Medicamentos para aliviar el dolor'),
+('Antibióticos', 'Combaten infecciones bacterianas'),
+('Vitaminas', 'Suplementos y refuerzos nutricionales');
+GO
+
+INSERT INTO Medicamentos (Nombre, Descripcion, Precio, Stock, Imagen, IdCategoria)
+VALUES
+('Paracetamol 500mg', 'Tabletas para dolor y fiebre', 1500, 100,'img/paracetamol.jpg', 1),
+('Ibuprofeno 400mg', 'Antiinflamatorio y analgésico', 2000, 80,'img/ibuprofeno.jpg', 1),
+('Amoxicilina 500mg', 'Antibiótico de amplio espectro', 2500, 60,'img/amoxicilina.jpg', 2),
+('Vitamina C 1000mg', 'Refuerza el sistema inmune', 1800, 120, 'img/vitaminaC.jpg', 3);
+GO
+
+
+CREATE TRIGGER trg_ActualizarStockVenta
+ON DetalleVentas
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Medicamentos
+    SET Stock = Stock - i.Cantidad
+    FROM Medicamentos m
+    INNER JOIN inserted i ON m.IdMedicamento = i.IdMedicamento;
+END;
+GO
+
+--procedimientos almacenados
+
+CREATE PROCEDURE sp_LoginUsuario
+    @Usuario VARCHAR(50),
+    @Clave VARCHAR(255)
+AS
+BEGIN
+    SELECT IdUsuario, Nombre, Rol, Estado
+    FROM Usuarios
+    WHERE Usuario = @Usuario AND Clave = @Clave AND Estado = 1;
+END;
+GO
+
+CREATE PROCEDURE sp_RegistrarUsuario
+    @Nombre VARCHAR(100),
+    @Email VARCHAR(100),
+    @Telefono VARCHAR(20),
+    @Direccion VARCHAR(255),
+    @Usuario VARCHAR(50),
+    @Clave VARCHAR(255),
+    @Rol VARCHAR(20)
+AS
+BEGIN
+    INSERT INTO Usuarios (Nombre, Email, Telefono, Direccion, Usuario, Clave, Rol)
+    VALUES (@Nombre, @Email, @Telefono, @Direccion, @Usuario, @Clave, @Rol);
+END;
+GO
+
+CREATE PROCEDURE sp_ListarMedicamentos
+AS
+BEGIN
+    SELECT m.IdMedicamento, m.Nombre, m.Descripcion, m.Precio, m.Stock, c.Nombre AS Categoria
+    FROM Medicamentos m
+    LEFT JOIN Categorias c ON m.IdCategoria = c.IdCategoria;
+END;
