@@ -145,3 +145,11 @@ BEGIN
     FROM Medicamentos m
     LEFT JOIN Categorias c ON m.IdCategoria = c.IdCategoria;
 END;
+
+
+UPDATE Medicamentos
+SET Imagen = 'producto6.png';
+
+UPDATE Medicamentos
+SET Imagen = 'producto6.png'
+WHERE IdMedicamento = 3;

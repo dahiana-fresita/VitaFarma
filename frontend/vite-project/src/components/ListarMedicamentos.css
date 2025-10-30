@@ -1,0 +1,93 @@
+.contenedor-lista {
+  padding: 20px;
+  text-align: center;
+}
+
+.titulo-lista {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.lista-medicamentos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tarjeta-medicamento {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-medicamento:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.imagen-medicamento {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+h4 {
+  margin: 8px 0 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+h5 {
+  margin: 4px 0;
+  color: #007bff;
+  font-weight: normal;
+}
+
+.botones {
+  margin-top: 10px;
+}
+
+.boton-vermas,
+.boton-verproducto {
+  margin: 5px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.boton-vermas {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.boton-verproducto {
+  background-color: #28a745;
+  color: white;
+}
+
+.boton-vermas:hover {
+  background-color: #138496;
+}
+
+.boton-verproducto:hover {
+  background-color: #218838;
+}
+
+.mensaje-carga {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  color: #555;
+}

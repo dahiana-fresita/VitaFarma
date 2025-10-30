@@ -8,9 +8,11 @@ import IniciarSesion  from './pages/IniciarSesion'
 
 
 function App() {
-
+  
   return (
+   
    <Router>
+    
     <Header />
     <Routes>
     <Route path='/' element={<PaginaPrincipal/>}/>

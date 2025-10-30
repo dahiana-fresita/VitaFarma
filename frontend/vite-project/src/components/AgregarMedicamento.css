@@ -1,0 +1,75 @@
+.contenedor-agregar {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-formulario {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.campo label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.campo input,
+.campo textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.boton-enviar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-enviar:hover {
+  background-color: #218838;
+}
+
+.mensaje-exito {
+  color: #28a745;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.mensaje-error {
+  color: #dc3545;
+  text-align: center;
+  margin-top: 15px;
+}
