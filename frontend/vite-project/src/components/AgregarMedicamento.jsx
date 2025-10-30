@@ -9,6 +9,7 @@ const AgregarMedicamento = () => {
     Precio: "",
     Stock: "",
     Categoria: "",
+    Imagen: "", // 👈 nuevo campo
   });
 
   const [mensaje, setMensaje] = useState("");
@@ -36,6 +37,7 @@ const AgregarMedicamento = () => {
         Precio: "",
         Stock: "",
         Categoria: "",
+        Imagen: "", // 👈 limpiar también el campo de imagen
       });
     } catch (err) {
       setError("❌ No se pudo agregar el medicamento");
@@ -98,6 +100,19 @@ const AgregarMedicamento = () => {
             name="Categoria"
             value={formData.Categoria}
             onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* 👇 Nuevo campo para la URL de la imagen */}
+        <div className="campo">
+          <label>URL de la imagen:</label>
+          <input
+            type="text"
+            name="Imagen"
+            value={formData.Imagen}
+            onChange={handleChange}
+            placeholder="Ejemplo: img/producto13.webp"
             required
           />
         </div>

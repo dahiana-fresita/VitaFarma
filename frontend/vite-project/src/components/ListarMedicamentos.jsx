@@ -4,7 +4,6 @@ import "./ListarMedicamentos.css";
 
 const ListarMedicamentos = () => {
   const [medicamentos, setMedicamentos] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const obtenerMedicamentos = async () => {
@@ -13,17 +12,11 @@ const ListarMedicamentos = () => {
         setMedicamentos(res.data);
       } catch (error) {
         console.error("Error al obtener medicamentos:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     obtenerMedicamentos();
   }, []);
-
-  if (loading) {
-    return <p className="mensaje-carga">Cargando medicamentos...</p>;
-  }
 
   return (
     <div className="contenedor-lista">

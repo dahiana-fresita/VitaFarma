@@ -91,10 +91,18 @@ GO
 
 INSERT INTO Medicamentos (Nombre, Descripcion, Precio, Stock, Imagen, IdCategoria)
 VALUES
-('Paracetamol 500mg', 'Tabletas para dolor y fiebre', 1500, 100,'img/paracetamol.jpg', 1),
-('Ibuprofeno 400mg', 'Antiinflamatorio y analgésico', 2000, 80,'img/ibuprofeno.jpg', 1),
-('Amoxicilina 500mg', 'Antibiótico de amplio espectro', 2500, 60,'img/amoxicilina.jpg', 2),
-('Vitamina C 1000mg', 'Refuerza el sistema inmune', 1800, 120, 'img/vitaminaC.jpg', 3);
+('Acetaminofen 500 Mg (Ag)', 'Medicamento para el alivio del dolor y la fiebre.', 18000, 100, 'img/producto5.webp', 1),
+('Vitamina Vita C + Zinc Mk Masticable Naranja', 'Suplemento vitamínico con vitamina C y zinc.', 6800, 100, 'img/producto6.png', 1),
+('Sal De Frutas Lua Plus', 'Producto efervescente para aliviar la acidez estomacal.', 3260, 100, 'img/producto7.png', 1),
+('Advil Espalda Y Cuello - Advil Back & Neck', 'Medicamento para aliviar el dolor muscular y de cuello.', 12950, 100, 'img/producto8.webp', 1),
+('Champu Elvive Glycolic Gloss', 'Champú para el cuidado capilar con efecto brillo.', 29700, 100, 'img/producto1.webp', 1),
+('Pañal Winny Pants Etapa 6/Xxxg', 'Pañales desechables para bebés grandes.', 55500, 100, 'img/producto10.png', 1),
+('Eucerin Protector Solar Facial Toque Seco Gel-Crema Fps 50', 'Protector solar facial de alta protección y acabado seco.', 106960, 100, 'img/producto2.webp', 1),
+('Dolex Niños Syrup', 'Jarabe analgésico y antipirético para niños.', 15800, 100, 'img/producto9.webp', 1),
+('Chapstick Menta', 'Bálsamo labial hidratante con aroma a menta.', 15300, 100, 'img/producto3.webp', 1),
+('Oferta Desodorante Nivea Men Invisible Black & White Roll On 2 X 50 Ml', 'Desodorante masculino que protege contra manchas.', 28100, 100, 'img/producto4.webp', 1),
+('Toallas Higienicas Nosotras Buenas Noches Nocturna Clasica Invisible Tela Rapisec', 'Toallas higiénicas nocturnas con alta absorción.', 10200, 100, 'img/producto12.png', 1),
+('Abrilar Jarabe', 'Jarabe natural para el alivio de la tos.', 253440, 100, 'img/producto11.webp', 1);
 GO
 
 
@@ -141,15 +149,7 @@ GO
 CREATE PROCEDURE sp_ListarMedicamentos
 AS
 BEGIN
-    SELECT m.IdMedicamento, m.Nombre, m.Descripcion, m.Precio, m.Stock, c.Nombre AS Categoria
+    SELECT m.IdMedicamento, m.Nombre, m.Descripcion, m.Precio, m.Stock,m.Imagen, c.Nombre AS Categoria
     FROM Medicamentos m
     LEFT JOIN Categorias c ON m.IdCategoria = c.IdCategoria;
 END;
-
-
-UPDATE Medicamentos
-SET Imagen = 'producto6.png';
-
-UPDATE Medicamentos
-SET Imagen = 'producto6.png'
-WHERE IdMedicamento = 3;
