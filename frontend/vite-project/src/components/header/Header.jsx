@@ -20,14 +20,16 @@ export default function Header() {
         </div>
 
         <div className="user-section">
-          <a href="/IniciarSesion">Iniciar sesión👤</a>
-          <a href="#">🛒 Carrito</a>
+          <i class="fa-solid fa-user"></i>
+          <a href="/IniciarSesion" className='titulo-cuenta'>Mi cuenta </a>
+          <i className="fas fa-shopping-cart"></i>
+          <a href="/Carrito">Ver Carrito</a>
+          
         </div>
       </div>
-
       <nav className="category-bar">
         <a href="#">Medicamentos 👨🏻‍⚕️</a>
-        <a href="#">Cuidado Personal 🛁</a>
+        <a href="/CuidadoPersonal">Cuidado Personal 🛁</a>
         <a href="#">Nutrición 🥗</a>
         <a href="#">Ofertas 💲</a>
         <a href="#">Higiene 💦</a>

@@ -1,23 +1,26 @@
-// src/config/db.js
 import sql from "mssql";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-dotenv.config(); // Cargar variables del archivo .env
+// Ruta absoluta al archivo .env
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: join(__dirname, "../../.env") });
 
-// Configuración de conexión a SQL Server
+console.log("Variables cargadas:", process.env.DB_SERVER); // <- para verificar
+
 const dbSettings = {
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  server: process.env.SERVER,
-  database: process.env.DATABASE,
-  port: 1433, // Puerto por defecto de SQL Server
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_NAME,
+  port: 1433,
   options: {
-    encrypt: false, // Desactiva el cifrado (útil para conexiones locales)
-    trustServerCertificate: true, // Permite certificados locales
+    encrypt: false,
+    trustServerCertificate: true,
   },
 };
 
-// Función para obtener la conexión
 export async function getConnection() {
   try {
     const pool = await sql.connect(dbSettings);
@@ -29,5 +32,6 @@ export async function getConnection() {
   }
 }
 
-// Exportar también el objeto sql (para consultas)
 export { sql };
+
+
